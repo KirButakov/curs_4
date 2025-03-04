@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Рассылки</h1>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'mailings:mailing_create' %}">Добавить рассылку</a>
+{% endif %}
+
+<ul>
+    {% for mailing in object_list %}
+        <li>
+            Рассылка {{ mailing.id }} - {{ mailing.status }}
+
+            {% if mailing.owner == user or perms.mailings.can_manage_mailings %}
+                <a href="{% url 'mailings:mailing_update' mailing.id %}">Редактировать</a>
+                <a href="{% url 'mailings:mailing_delete' mailing.id %}">Удалить</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>У вас пока нет рассылок.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
