@@ -21,9 +21,12 @@ class Mailing(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        permissions = [
-            ("can_manage_mailings", "Can manage mailings"),
-        ]
+        verbose_name = "Рассылка"
+        verbose_name_plural = "Рассылки"
+        ordering = ["-start_time"]
+
+    def __str__(self):
+        return f"Рассылка {self.id}"
 
     def send_mailing(self):
         """Отправляет письма клиентам и записывает попытки в MailingAttempt"""
@@ -66,6 +69,11 @@ class MailingAttempt(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     server_response = models.TextField()
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Попытка рассылки"
+        verbose_name_plural = "Попытки рассылок"
+        ordering = ["-attempt_time"]
 
     def __str__(self):
         return f"Попытка {self.id}"

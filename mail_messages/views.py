@@ -5,7 +5,10 @@ from mail_messages.models import Message
 
 class MessageListView(ListView):
     model = Message
-    template_name = "mail_messages/message_list.html"
+    template_name = "messages/message_list.html"
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
 
 
 class MessageCreateView(CreateView):

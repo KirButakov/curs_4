@@ -7,6 +7,9 @@ class ClientListView(ListView):
     model = Client
     template_name = "clients/client_list.html"
 
+    def get_queryset(self):
+        return Client.objects.filter(owner=self.request.user)
+
 
 class ClientCreateView(CreateView):
     model = Client
